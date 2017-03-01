@@ -16,7 +16,7 @@ describe('development server', () => {
   it('should not ssr', async () => {
     const r = await site.fetch('/')
     const $ = cheerio.load(await r.text())
-    expect($('#app')).to.be.empty
+    expect($('#app').text()).to.eql('')
   })
 })
 
