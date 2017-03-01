@@ -1,2 +1,4 @@
 import { createBrowserHistory, History } from 'history'
-export const history: History = createBrowserHistory()
+import { memoize } from 'lodash'
+
+export const history: () => History = memoize(() => createBrowserHistory())

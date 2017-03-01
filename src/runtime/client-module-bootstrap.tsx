@@ -41,10 +41,10 @@ export default function clientModuleBootstrap(moduleLoaders: ModuleLoader[]) {
     startRequested = true
 
     window.addEventListener('load', () => {
-      mountLocation(history.location, () => {
+      mountLocation(history().location, () => {
         postLoadedEvent()
       })
-      history.listen(location => mountLocation(location))
+      history().listen(location => mountLocation(location))
     })
   }
 }

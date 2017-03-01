@@ -11,7 +11,7 @@ export default class Link extends React.Component<React.HTMLProps<HTMLAnchorElem
     if (evt.metaKey || evt.shiftKey || evt.ctrlKey) return
     if (evt.defaultPrevented) return
 
-    history.push(this.props.href)
+    history().push(this.props.href)
     evt.preventDefault()
   }
 
