@@ -1,12 +1,13 @@
 {
   "name": "luminant",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "Super-fast, super-simple react site server",
   "main": "index.js",
   "author": "Chris Devereux",
   "scripts": {
     "test": "mocha",
-    "prepublish": "bash scripts/build.bash"
+    "prepublish": "bash scripts/build.bash",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "license": "MIT",
   "dependencies": {
@@ -49,5 +50,12 @@
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-hot-middleware": "^2.17.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chrisdevereux/luminant.git"
+  },
+  "devDependencies": {
+    "semantic-release": "^6.3.2"
   }
 }
