@@ -1,4 +1,4 @@
-// import { NewLoaderRule, Plugin, UglifyPluginOptions } from 'webpack'
+import { NewLoaderRule } from 'webpack'
 import { withDefault } from '../util/helpers';
 
 export type PathPattern = string | string[]
@@ -8,6 +8,7 @@ export type BuildConfig = SourceGroup & ConfigOptions
 
 export interface SourceGroup {
   paths: PathPattern
+  loaders?: NewLoaderRule[]
 }
 
 export interface ConfigOptions {

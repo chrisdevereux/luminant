@@ -17,11 +17,21 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
     devtool: config.debug ? 'eval-source-map' : undefined,
 
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.json']
+      extensions: ['.ts', '.tsx', '.js', '.json'],
+      modules: [
+        // Needed to run locally linked luminant
+        path.resolve(path.join(__dirname, '..', 'node_modules')),
+        'node_modules'
+      ]
     },
 
     resolveLoader: {
-      extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js'],
+      modules: [
+        // Needed to run locally linked luminant
+        path.resolve(path.join(__dirname, '..', 'node_modules')),
+        'node_modules'
+      ]
     },
 
     entry: [
@@ -54,6 +64,11 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
             }
           }
         },
+        {
+          test: /\.scss$/,
+          loaders: ['style-loader', 'css-loader?modules&localIdentName=[name]__[local]', 'sass-loader']
+        },
+        ...(config.loaders || [])
       ]
     },
 
