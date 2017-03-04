@@ -75,7 +75,7 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
     plugins: [
       ...ifDebug(config, [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin()
       ])
     ]
   }
