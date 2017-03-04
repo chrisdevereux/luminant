@@ -1,8 +1,8 @@
-import { Configuration } from 'webpack'
+import * as webpack from 'webpack'
 import * as path from 'path'
 
 import { getRouteFiles, getRoutesFromFiles } from './get-routes';
-import { BuildConfig, PathPattern } from '../api/config';
+import { BuildConfig, PathPattern, Config } from '../api/config';
 import { shouldExternaliseModule } from './external-module-check';
 
 export interface PackagerConfig extends BuildConfig {
@@ -10,7 +10,7 @@ export interface PackagerConfig extends BuildConfig {
   outDir?: string
 }
 
-export function getWebpackConfig(config: PackagerConfig): Configuration {
+export function getWebpackConfig(config: PackagerConfig): webpack.Configuration {
   return {
     target: config.server ? 'node' : 'web',
 
@@ -20,7 +20,16 @@ export function getWebpackConfig(config: PackagerConfig): Configuration {
       extensions: ['.ts', '.tsx', '.js', '.json']
     },
 
-    entry: entrypoints(config),
+    resolveLoader: {
+      extensions: ['.ts', '.tsx', '.js']
+    },
+
+    entry: [
+      ...ifDebug(config, [
+        'webpack-hot-middleware/client?reload=true',
+      ]),
+      entrypoints(config)
+    ],
 
     externals: config.server ? shouldExternaliseModule : undefined,
 
@@ -46,8 +55,19 @@ export function getWebpackConfig(config: PackagerConfig): Configuration {
           }
         },
       ]
-    }
+    },
+
+    plugins: [
+      ...ifDebug(config, [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+      ])
+    ]
   }
+}
+
+function ifDebug<T>(config: Config, x: T[]) {
+  return config.debug ? x : []
 }
 
 function entrypoints(config: PackagerConfig) {
@@ -60,7 +80,7 @@ function entrypoints(config: PackagerConfig) {
 }
 
 function wrapEntrypoints(paths: PathPattern, transformerPath: string) {
-  const transformLoader = path.resolve(__dirname, './module-transform-loader.ts')
+  const transformLoader = path.resolve(__dirname, './module-transform-loader')
   const transformer = path.resolve(__dirname, transformerPath)
   const modules = getRouteFiles(paths)
     .filter(c => getRoutesFromFiles([c]).length > 0)
@@ -71,3 +91,4 @@ function wrapEntrypoints(paths: PathPattern, transformerPath: string) {
     '!', transformer
   ].join('')
 }
+
