@@ -1,7 +1,7 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
 
-import { getRouteFiles, getRoutesFromFiles } from './get-routes';
+import { getRouteFiles } from './get-routes';
 import { BuildConfig, PathPattern, Config } from '../api/config';
 import { shouldExternaliseModule } from './external-module-check';
 
@@ -97,8 +97,10 @@ function entrypoints(config: PackagerConfig) {
 function wrapEntrypoints(paths: PathPattern, transformerPath: string) {
   const transformLoader = path.resolve(__dirname, './module-transform-loader')
   const transformer = path.resolve(__dirname, transformerPath)
+
+  // [todo] - Filter out files containing no modules without calling require
+  // (and breaking non-js dependencies)
   const modules = getRouteFiles(paths)
-    .filter(c => getRoutesFromFiles([c]).length > 0)
 
   return [
     transformLoader,
