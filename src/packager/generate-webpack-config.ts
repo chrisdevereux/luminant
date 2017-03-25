@@ -1,5 +1,6 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
+import { map, fromPairs } from 'lodash'
 
 import { getRouteFiles } from './get-routes';
 import { BuildConfig, PathPattern, Config } from '../api/config';
@@ -73,16 +74,26 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
     },
 
     plugins: [
+      new webpack.DefinePlugin(environment()),
       ...ifDebug(config, [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
-      ])
+      ]),
     ]
   }
 }
 
 function ifDebug<T>(config: Config, x: T[]) {
   return config.debug ? x : []
+}
+
+function environment() {
+  return fromPairs(
+    map(process.env, (value, key) => [
+      `process.env.${key}`,
+      JSON.stringify(value),
+    ])
+  )
 }
 
 function entrypoints(config: PackagerConfig) {
