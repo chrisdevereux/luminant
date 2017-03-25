@@ -4,7 +4,7 @@ import { assign, merge } from 'lodash'
 import { isPromiseLike } from '../util/helpers';
 import { Route, AnyRoute, MountValue, Mount, MountFn } from '../api/route';
 
-export const ROUTE_IDENTIFIER = Symbol('LuminantRoute')
+export const ROUTE_IDENTIFIER = 'LuminantRoute'
 
 export function makeRoute<T>(x: T): T & AnyRoute {
   if (isRoute(x)) {
