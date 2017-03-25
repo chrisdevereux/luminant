@@ -5,7 +5,7 @@ import * as ExtractText from 'extract-text-webpack-plugin'
 
 import { getRouteFiles } from './get-routes';
 import { BuildConfig, PathPattern, Config } from '../api/config';
-import { shouldExternaliseModule } from './external-module-check';
+// import { shouldExternaliseModule } from './external-module-check';
 
 export interface PackagerConfig extends BuildConfig {
   server: boolean
@@ -43,7 +43,13 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
       entrypoints(config)
     ],
 
-    externals: config.server ? shouldExternaliseModule : undefined,
+    externals: !config.server ? undefined : require('webpack-node-externals')({
+      whitelist: [
+        /\.css$/,
+        /\.s[ca]ss$/,
+        /\.svg$/,
+      ]
+    }),
 
     output: {
       path: path.resolve(config.outDir),
