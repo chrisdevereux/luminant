@@ -1,6 +1,7 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
 import { map, fromPairs } from 'lodash'
+import * as ExtractText from 'extract-text-webpack-plugin'
 
 import { getRouteFiles } from './get-routes';
 import { BuildConfig, PathPattern, Config } from '../api/config';
@@ -67,7 +68,17 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
         },
         {
           test: /\.scss$/,
-          loaders: ['style-loader', 'css-loader?modules&localIdentName=[name]__[local]', 'sass-loader']
+          use: ExtractText.extract({
+            fallback: 'style-loader',
+            use: ['css-loader?modules&localIdentName=[name]__[local]', 'sass-loader']
+          })
+        },
+        {
+          test: /\.css$/,
+          use: ExtractText.extract({
+            fallback: 'style-loader',
+            use: ['css-loader']
+          })
         },
         ...(config.loaders || [])
       ]
@@ -79,12 +90,21 @@ export function getWebpackConfig(config: PackagerConfig): webpack.Configuration 
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
       ]),
+      ...ifProduction(config, [
+        new ExtractText({
+          filename: 'style.css',
+        })
+      ])
     ]
   }
 }
 
 function ifDebug<T>(config: Config, x: T[]) {
   return config.debug ? x : []
+}
+
+function ifProduction<T>(config: Config, x: T[]) {
+  return !config.debug ? x : []
 }
 
 function environment() {

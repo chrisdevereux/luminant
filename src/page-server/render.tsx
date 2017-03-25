@@ -11,6 +11,7 @@ export function renderHeader(mount: Mount): string {
       <meta charSet="utf8" />
       {mount.title && <title>{mount.title}</title>}
       <script src="/bundle.js" />
+      <link rel="stylesheet" href="/style.css" />
     </head>
   )
 }
