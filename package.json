@@ -67,8 +67,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/chrisdevereux/luminant.git"
-  },
-  "devDependencies": {
-    "semantic-release": "^6.3.2"
   }
 }
