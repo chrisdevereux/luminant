@@ -6,7 +6,7 @@
   "author": "Chris Devereux",
   "scripts": {
     "test": "echo 'skipping tests'",
-    "build": "bash scripts/build.bash",
+    "bundle": "bash scripts/build.bash",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "license": "MIT",

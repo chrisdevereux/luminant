@@ -8,9 +8,9 @@ notifications:
 node_js:
   - '6.10.0'
 before_script:
-  - bash scripts/build.bash
+  - yarn run bundle
 after_success:
-  - npm run semantic-release
+  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
