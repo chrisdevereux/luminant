@@ -1,5 +1,6 @@
 language: node_js
 cache:
+  yarn: true
   directories:
     - node_modules
 notifications:
@@ -7,7 +8,7 @@ notifications:
 node_js:
   - '6.10.0'
 before_script:
-  - npm prune
+  - bash scripts/build.bash
 after_success:
   - npm run semantic-release
 branches:
