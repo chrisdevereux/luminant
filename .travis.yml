@@ -7,9 +7,8 @@ notifications:
   email: false
 node_js:
   - '6'
-before_script:
-  - yarn run bundle
 after_success:
+  - yarn run bundle
   - yarn run semantic-release
 branches:
   except:
