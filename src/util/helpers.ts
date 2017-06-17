@@ -11,3 +11,11 @@ export function isPromiseLike(x: any): x is PromiseLike<{}> {
 export function withDefault<T>(defaultVal: T, x: Maybe<T>): T {
   return (typeof x === 'undefined') ? defaultVal : x
 }
+
+export function unsupported(x: any, kind: string): never {
+  throw new Error(`Unsupported ${kind}: ${x}`)
+}
+
+export function unexpected(x: never, kind: string): never {
+  throw new Error(`Unexpected ${kind}: ${x}`)
+}
